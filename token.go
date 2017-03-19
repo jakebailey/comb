@@ -9,7 +9,7 @@ func Token(tokens ...[]rune) Parser {
 	}
 
 	for _, tok := range tokens {
-		if string(tok) == "" {
+		if len(tok) == 0 {
 			panic("token cannot be empty")
 		}
 	}
