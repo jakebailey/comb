@@ -42,14 +42,6 @@ func SliceCombiner(results []Result, begin, end Scanner) Result {
 	}
 }
 
-// TextCombiner combines results by returning a Result with the runes
-// between begin and end.
-func TextCombiner(results []Result, begin, end Scanner) Result {
-	return Result{
-		Runes: begin.Between(end),
-	}
-}
-
 // TextSequence is like Sequence, but does not capture all results,
 // instead returning the runes between the start and end of the matching
 // region. Unlike Sequence, this does not allocate anything.
