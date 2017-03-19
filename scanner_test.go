@@ -33,7 +33,7 @@ func TestScanner(t *testing.T) {
 		_, _, err = next.Next()
 		assert.Equal(t, io.EOF, err)
 
-		rng := s.Range(next)
+		rng := s.Between(next)
 		assert.Equal(t, runes, rng)
 	})
 

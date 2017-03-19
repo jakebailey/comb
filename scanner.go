@@ -53,9 +53,9 @@ func (s Scanner) EOF() bool {
 	return s.i >= len(s.runes)
 }
 
-// Range returns the slice between two scanners.
-// s1.Range(s2) returns a slice in the range [s1, s2).
-func (s Scanner) Range(other Scanner) []rune {
+// Between returns the slice between two scanners.
+// s1.Between(s2) returns a slice in the range [s1, s2).
+func (s Scanner) Between(other Scanner) []rune {
 	return s.runes[s.i:other.i]
 }
 
