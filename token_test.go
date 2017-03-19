@@ -28,6 +28,28 @@ func notMatchingToken(t *testing.T, p Parser, str string) {
 	assert.False(t, r.Matched())
 }
 
+func TestBadToken(t *testing.T) {
+	assert.Panics(t, func() {
+		Token()
+	})
+	assert.Panics(t, func() {
+		StringToken()
+	})
+	assert.Panics(t, func() {
+		Token([]rune(""))
+	})
+	assert.Panics(t, func() {
+		StringToken("")
+	})
+
+	assert.Panics(t, func() {
+		Token([]rune("foobar"), []rune(""), []rune("asdf"))
+	})
+	assert.Panics(t, func() {
+		StringToken("foobar", "", "asdf")
+	})
+}
+
 func TestSingleToken(t *testing.T) {
 	p := StringToken("foobar")
 
