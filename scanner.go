@@ -47,7 +47,8 @@ func (s Scanner) Next() (rune, Scanner, error) {
 	}, nil
 }
 
-// EOF returns true if the scanner is at EOF.
+// EOF returns true if the scanner is at EOF, i.e. a call to Next would
+// return EOF.
 func (s Scanner) EOF() bool {
 	return s.i >= len(s.runes)
 }
