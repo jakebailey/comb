@@ -20,9 +20,10 @@ func ParserFunc(fn func(Scanner) (Result, Scanner)) Parser {
 	return parserFunc{fn: fn}
 }
 
-func Rune(runes ...rune) Parser {
-	m := make(map[rune]struct{}, len(runes))
-	for _, r := range runes {
+// Char accepts a single given character.
+func Char(chars ...rune) Parser {
+	m := make(map[rune]struct{}, len(chars))
+	for _, r := range chars {
 		m[r] = struct{}{}
 	}
 
@@ -38,6 +39,6 @@ func Rune(runes ...rune) Parser {
 			}, next
 		}
 
-		return Failedf("unexpected rune '%c'", r), s
+		return Failedf("unexpected character '%c'", r), s
 	})
 }

@@ -7,9 +7,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestRune(t *testing.T) {
+func TestChar(t *testing.T) {
 	t.Run("unexpected rune", func(t *testing.T) {
-		p := Rune('a', 'b', 'c')
+		p := Char('a', 'b', 'c')
 		s := NewStringScanner("abcd")
 		var r Result
 
@@ -27,11 +27,11 @@ func TestRune(t *testing.T) {
 
 		r, s = p.Parse(s)
 		assert.False(t, r.Matched())
-		assert.EqualError(t, r.Err, "unexpected rune 'd'")
+		assert.EqualError(t, r.Err, "unexpected character 'd'")
 	})
 
 	t.Run("EOF", func(t *testing.T) {
-		p := Rune('a', 'b', 'c')
+		p := Char('a', 'b', 'c')
 		s := NewStringScanner("a")
 		var r Result
 
@@ -45,10 +45,10 @@ func TestRune(t *testing.T) {
 	})
 }
 
-func BenchmarkRune(b *testing.B) {
+func BenchmarkChar(b *testing.B) {
 	b.ReportAllocs()
 
-	p := Rune('a', 'b', 'c')
+	p := Char('a', 'b', 'c')
 	s := NewStringScanner("abc")
 
 	b.ResetTimer()
