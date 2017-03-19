@@ -80,7 +80,7 @@ func Char(chars ...rune) Parser {
 	})
 }
 
-// Take accepts n characters.
+// Take accepts n characters and returns the runes captured.
 func Take(n int) Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
 		next := s

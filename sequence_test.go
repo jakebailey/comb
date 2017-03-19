@@ -70,6 +70,23 @@ func TestSequence(t *testing.T) {
 	})
 }
 
+func BenchmarkSequence(b *testing.B) {
+	b.ReportAllocs()
+
+	p := Sequence(
+		nil,
+		Char('a'),
+		Char('b'),
+		Char('c'),
+	)
+	s := NewStringScanner("abcd")
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		p.Parse(s)
+	}
+}
+
 func TestTextSequence(t *testing.T) {
 	t.Run("match", func(t *testing.T) {
 		p := TextSequence(
@@ -103,4 +120,20 @@ func TestTextSequence(t *testing.T) {
 		assert.False(t, r.Matched())
 		assert.EqualError(t, r.Err, "unexpected character 'a'")
 	})
+}
+
+func BenchmarkTextSequence(b *testing.B) {
+	b.ReportAllocs()
+
+	p := TextSequence(
+		Char('a'),
+		Char('b'),
+		Char('c'),
+	)
+	s := NewStringScanner("abcd")
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		p.Parse(s)
+	}
 }
