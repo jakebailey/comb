@@ -9,11 +9,13 @@ import "fmt"
 // If your result contains an error that is not a failure, then it should
 // be placed into Interface.
 type Result struct {
-	Err       error
-	Runes     []rune
-	Int64     int64
-	Float64   float64
-	Interface interface{}
+	Err        error
+	Runes      []rune
+	Int64      int64
+	Float64    float64
+	Interface  interface{}
+	ParserName string
+	Ignore     bool
 }
 
 // Matched returns true if Err is not nil.
@@ -29,23 +31,16 @@ func Failed(err error) Result {
 type errWrap struct {
 	format string
 	a      []interface{}
-	err    error
 }
 
 func (e errWrap) Error() string {
-	if e.err != nil {
-		return e.err.Error()
-	}
-
-	e.err = fmt.Errorf(e.format, e.a...)
-	return e.err.Error()
+	return fmt.Sprintf(e.format, e.a...)
 }
 
 // Failedf returns a failed result in fmt.Errorf form.
 // fmt.Errorf will not be called until the error is read to prevent
 // unneccesary computation. This is important, as failed results
-// can be checked without ever generating an error. After calling
-// Error() on the error, the error is cached for further use.
+// can be checked without ever generating an error.
 func Failedf(format string, a ...interface{}) Result {
 	return Result{
 		Err: errWrap{

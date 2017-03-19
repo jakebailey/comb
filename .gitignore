@@ -22,3 +22,6 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+# go test pprof and coverprofile outputs
+*.out

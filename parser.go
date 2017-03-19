@@ -1,6 +1,8 @@
 package comb
 
-import "io"
+import (
+	"io"
+)
 
 // Parser describes comb parsers, which take a scanner,
 // scan some amount of text, then return a result and
@@ -22,13 +24,31 @@ func ParserFunc(fn func(Scanner) (Result, Scanner)) Parser {
 	return parserFunc{fn: fn}
 }
 
+// Named sets the ParserName of a parser's result.
+func Named(name string, p Parser) Parser {
+	return ParserFunc(func(s Scanner) (Result, Scanner) {
+		r, next := p.Parse(s)
+		r.ParserName = name
+		return r, next
+	})
+}
+
+// Ignore sets the result of a Parser to be Ignored
+func Ignore(p Parser) Parser {
+	return ParserFunc(func(s Scanner) (Result, Scanner) {
+		r, next := p.Parse(s)
+		r.Ignore = true
+		return r, next
+	})
+}
+
 // AnyChar accepts any single character.
 func AnyChar() Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
 		_, next, err := s.Next()
 
 		if err != nil {
-			return Failed(err), s
+			return Failed(err), next
 		}
 
 		return Result{
@@ -47,7 +67,7 @@ func Char(chars ...rune) Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
 		r, next, err := s.Next()
 		if err != nil {
-			return Failed(err), s
+			return Failed(err), next
 		}
 
 		if _, ok := m[r]; ok {
@@ -70,7 +90,7 @@ func Take(n int) Parser {
 			_, next, err = next.Next()
 
 			if err != nil {
-				return Failed(err), s
+				return Failed(err), next
 			}
 		}
 
@@ -84,12 +104,10 @@ func Take(n int) Parser {
 func EOF() Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
 		r, next, err := s.Next()
-		if err == io.EOF {
-			return Result{
-				Runes: s.Between(next),
-			}, next
+		if err != io.EOF {
+			return Failedf("expected EOF, got '%c'", r), next
 		}
 
-		return Failedf("expected EOF, got '%c'", r), s
+		return Result{}, next
 	})
 }

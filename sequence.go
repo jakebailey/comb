@@ -35,8 +35,21 @@ func Sequence(combiner ResultCombiner, parsers ...Parser) Parser {
 type ResultCombiner func(results []Result, begin, end Scanner) Result
 
 // SliceCombiner combines results by returning a Result with the
-// slice in Interface.
+// slice in Interface. If a result is set to be ignored, the result
+// will not be in the new result slice.
 func SliceCombiner(results []Result, begin, end Scanner) Result {
+	ignored := 0
+
+	for i, r := range results {
+		if r.Ignore {
+			ignored++
+		} else {
+			results[i-ignored] = results[i]
+		}
+	}
+
+	results = results[:len(results)-ignored]
+
 	return Result{
 		Interface: results,
 	}
@@ -45,6 +58,8 @@ func SliceCombiner(results []Result, begin, end Scanner) Result {
 // TextSequence is like Sequence, but does not capture all results,
 // instead returning the runes between the start and end of the matching
 // region. Unlike Sequence, this does not allocate anything.
+// TextSequence does not read any results, just the returned scanners,
+// so cannot respect the Ignored option.
 func TextSequence(parsers ...Parser) Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
 		var r Result
