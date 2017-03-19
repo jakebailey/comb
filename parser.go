@@ -1,5 +1,7 @@
 package comb
 
+import "io"
+
 // Parser describes comb parsers, which take a scanner,
 // scan some amount of text, then return a result and
 // the next scanner.
@@ -75,5 +77,19 @@ func Take(n int) Parser {
 		return Result{
 			Runes: s.Between(next),
 		}, next
+	})
+}
+
+// EOF matches only at EOF.
+func EOF() Parser {
+	return ParserFunc(func(s Scanner) (Result, Scanner) {
+		r, next, err := s.Next()
+		if err == io.EOF {
+			return Result{
+				Runes: s.Between(next),
+			}, next
+		}
+
+		return Failedf("expected EOF, got '%c'", r), s
 	})
 }
