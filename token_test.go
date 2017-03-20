@@ -1,6 +1,8 @@
 package comb
 
 import (
+	"fmt"
+	"io"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,7 +11,7 @@ import (
 func matchingToken(t *testing.T, p Parser, str string) {
 	s := NewStringScanner(str)
 
-	r, next := p.Parse(s)
+	r, _ := p.Parse(s)
 
 	expected := Result{
 		Runes: []rune(str),
@@ -17,15 +19,21 @@ func matchingToken(t *testing.T, p Parser, str string) {
 
 	assert.True(t, r.Matched())
 	assert.Equal(t, expected, r)
-	assert.True(t, next.EOF())
 }
 
-func notMatchingToken(t *testing.T, p Parser, str string) {
+func notMatchingToken(t *testing.T, p Parser, str, prefix string) {
 	s := NewStringScanner(str)
 
 	r, _ := p.Parse(s)
 
 	assert.False(t, r.Matched())
+
+	if prefix != "" {
+		errStr := fmt.Sprintf("'%s' is not a prefix of any token", prefix)
+		assert.EqualError(t, r.Err, errStr)
+	} else {
+		assert.Equal(t, r.Err, io.EOF)
+	}
 }
 
 func TestBadToken(t *testing.T) {
@@ -54,17 +62,17 @@ func TestSingleToken(t *testing.T) {
 	p := StringToken("foobar")
 
 	t.Run("easy", func(t *testing.T) {
-		tests := map[string]bool{
-			"foobar": true,
-			"foo":    false,
-			"abcd":   false,
+		tests := map[string]string{
+			"foobar": "foobar", // parses whole string
+			"foo":    "",       // ends with EOF
+			"abcd":   "a",      // stops at 'a'
 		}
 
-		for s, match := range tests {
-			if match {
+		for s, prefix := range tests {
+			if s == prefix {
 				matchingToken(t, p, s)
 			} else {
-				notMatchingToken(t, p, s)
+				notMatchingToken(t, p, s, prefix)
 			}
 		}
 	})
@@ -100,19 +108,19 @@ func TestManyTokens(t *testing.T) {
 	p := StringToken("foobar", "foolol", "hello")
 
 	t.Run("easy", func(t *testing.T) {
-		tests := map[string]bool{
-			"foobar": true,
-			"foo":    false,
-			"abcd":   false,
-			"hello":  true,
-			"foolol": true,
+		tests := map[string]string{
+			"foobar": "foobar",
+			"foo":    "",
+			"abcd":   "a",
+			"hello":  "hello",
+			"foolol": "foolol",
 		}
 
-		for s, match := range tests {
-			if match {
+		for s, prefix := range tests {
+			if s == prefix {
 				matchingToken(t, p, s)
 			} else {
-				notMatchingToken(t, p, s)
+				notMatchingToken(t, p, s, prefix)
 			}
 		}
 	})

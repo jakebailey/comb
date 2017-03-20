@@ -1,5 +1,7 @@
 package comb
 
+import "fmt"
+
 // Token accepts the shortest given token. At least one token must
 // be provided. If more than one token is given, then a trie is used
 // to check for membership.
@@ -44,7 +46,7 @@ func singleToken(runes []rune) Parser {
 			}
 
 			if r != c {
-				return Failedf("unexpected character '%c'", r), next
+				return Failed(tokenError(s.Between(next))), next
 			}
 		}
 
@@ -72,13 +74,20 @@ func manyTokens(tokens [][]rune) Parser {
 
 			t = t.find(r)
 			if t == nil {
-				return Failedf("unexpected character '%c'", r), next
+				return Failed(tokenError(s.Between(next))), next
 			}
 		}
 
 		return Result{
 			Runes: s.Between(next),
 		}, next
+	})
+}
+
+func tokenError(runes []rune) error {
+	return errorFunc(func() string {
+		prefix := string(runes)
+		return fmt.Sprintf("'%s' is not a prefix of any token", prefix)
 	})
 }
 

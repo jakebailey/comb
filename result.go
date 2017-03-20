@@ -1,7 +1,5 @@
 package comb
 
-import "fmt"
-
 // Result represents the result of a parser.
 // It supports a range of common values, including a rune slice,
 // integer and float types used in strconv, as well as an interface{}
@@ -28,24 +26,12 @@ func Failed(err error) Result {
 	return Result{Err: err}
 }
 
-type errWrap struct {
-	format string
-	a      []interface{}
-}
-
-func (e errWrap) Error() string {
-	return fmt.Sprintf(e.format, e.a...)
-}
-
 // Failedf returns a failed result in fmt.Errorf form.
 // fmt.Errorf will not be called until the error is read to prevent
 // unneccesary computation. This is important, as failed results
 // can be checked without ever generating an error.
 func Failedf(format string, a ...interface{}) Result {
 	return Result{
-		Err: errWrap{
-			format: format,
-			a:      a,
-		},
+		Err: errorf(format, a...),
 	}
 }

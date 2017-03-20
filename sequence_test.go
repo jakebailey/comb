@@ -160,12 +160,12 @@ func TestSurround(t *testing.T) {
 	})
 
 	t.Run("no match", func(t *testing.T) {
-		s := NewStringScanner("(asd)aaa")
+		s := NewStringScanner("(food)aaa")
 
 		r, _ := p.Parse(s)
 
 		assert.False(t, r.Matched())
-		assert.EqualError(t, r.Err, "unexpected character 'a'")
+		assert.EqualError(t, r.Err, "unexpected character 'd'")
 	})
 
 	t.Run("nested", func(t *testing.T) {
