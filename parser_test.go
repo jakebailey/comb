@@ -79,3 +79,38 @@ func TestEOF(t *testing.T) {
 		assert.False(t, next.EOF())
 	})
 }
+
+func TestMaybe(t *testing.T) {
+	p := TextSequence(
+		Maybe(Char('a')),
+		Char('b'),
+	)
+
+	t.Run("yes maybe", func(t *testing.T) {
+		s := NewStringScanner("ab")
+
+		r, next := p.Parse(s)
+
+		expected := Result{
+			Runes: []rune("ab"),
+		}
+
+		assert.True(t, r.Matched())
+		assert.Equal(t, expected, r)
+		assert.True(t, next.EOF())
+	})
+
+	t.Run("no maybe", func(t *testing.T) {
+		s := NewStringScanner("b")
+
+		r, next := p.Parse(s)
+
+		expected := Result{
+			Runes: []rune("b"),
+		}
+
+		assert.True(t, r.Matched())
+		assert.Equal(t, expected, r)
+		assert.True(t, next.EOF())
+	})
+}

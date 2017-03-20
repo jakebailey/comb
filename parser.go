@@ -61,3 +61,15 @@ func EOF() Parser {
 		return Result{}, next
 	})
 }
+
+// Maybe tries a parser and returns its result if it matches,
+// otherwise, it returns an empty result and the original scanner.
+func Maybe(p Parser) Parser {
+	return ParserFunc(func(s Scanner) (Result, Scanner) {
+		r, next := p.Parse(s)
+		if r.Matched() {
+			return r, next
+		}
+		return Result{}, s
+	})
+}
