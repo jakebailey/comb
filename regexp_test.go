@@ -38,7 +38,9 @@ func TestRegexp(t *testing.T) {
 
 		r, next := p.Parse(s)
 
-		expected := Result{}
+		expected := Result{
+			Runes: []rune{},
+		}
 
 		assert.True(t, r.Matched())
 		assert.Equal(t, expected, r)

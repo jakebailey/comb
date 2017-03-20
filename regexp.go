@@ -30,24 +30,17 @@ func Regexp(pattern string) Parser {
 
 		count := match[1]
 
-		if count == 0 {
-			return Result{}, s
-		}
-
-		for {
+		for count > 0 {
 			r, next, err = next.Next()
 			if err != nil {
 				return Failed(err), next
 			}
 
 			count -= utf8.RuneLen(r)
+		}
 
-			if count == 0 {
-				break
-			}
-			if count < 0 {
-				panic("bug: got more bytes than regexp match specified")
-			}
+		if count < 0 {
+			panic("bug: got more bytes than regexp match specified")
 		}
 
 		return Result{
