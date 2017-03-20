@@ -110,3 +110,39 @@ func TestTake(t *testing.T) {
 		assert.True(t, next.EOF())
 	})
 }
+
+func TestNotChar(t *testing.T) {
+	p := NotChar('a', 'b', 'c')
+
+	t.Run("match", func(t *testing.T) {
+		s := NewStringScanner("def")
+
+		r, next := p.Parse(s)
+
+		expected := Result{
+			Runes: []rune("d"),
+		}
+
+		assert.True(t, r.Matched())
+		assert.Equal(t, expected, r)
+		assert.False(t, next.EOF())
+	})
+
+	t.Run("no match", func(t *testing.T) {
+		s := NewStringScanner("abc")
+
+		r, _ := p.Parse(s)
+
+		assert.False(t, r.Matched())
+		assert.EqualError(t, r.Err, "unexpected character 'a'")
+	})
+
+	t.Run("EOF", func(t *testing.T) {
+		s := NewStringScanner("")
+
+		r, _ := p.Parse(s)
+
+		assert.False(t, r.Matched())
+		assert.Equal(t, r.Err, io.EOF)
+	})
+}

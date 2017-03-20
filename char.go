@@ -28,13 +28,13 @@ func Char(chars ...rune) Parser {
 			return Failed(err), next
 		}
 
-		if _, ok := m[r]; ok {
-			return Result{
-				Runes: s.Between(next),
-			}, next
+		if _, ok := m[r]; !ok {
+			return Failedf("unexpected character '%c'", r), s
 		}
 
-		return Failedf("unexpected character '%c'", r), s
+		return Result{
+			Runes: s.Between(next),
+		}, next
 	})
 }
 
@@ -50,6 +50,29 @@ func Take(n int) Parser {
 			if err != nil {
 				return Failed(err), next
 			}
+		}
+
+		return Result{
+			Runes: s.Between(next),
+		}, next
+	})
+}
+
+// NotChar only accepts a char not given.
+func NotChar(chars ...rune) Parser {
+	m := make(map[rune]struct{}, len(chars))
+	for _, r := range chars {
+		m[r] = struct{}{}
+	}
+
+	return ParserFunc(func(s Scanner) (Result, Scanner) {
+		r, next, err := s.Next()
+		if err != nil {
+			return Failed(err), next
+		}
+
+		if _, ok := m[r]; ok {
+			return Failedf("unexpected character '%c'", r), s
 		}
 
 		return Result{
