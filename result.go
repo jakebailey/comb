@@ -7,13 +7,13 @@ package comb
 // If your result contains an error that is not a failure, then it should
 // be placed into Interface.
 type Result struct {
-	Err        error
-	Runes      []rune
-	Int64      int64
-	Float64    float64
-	Interface  interface{}
-	ParserName string
-	Ignore     bool
+	Err       error
+	Runes     []rune
+	Int64     int64
+	Float64   float64
+	Interface interface{}
+	Tag       string
+	Ignore    bool
 }
 
 // Matched returns true if Err is not nil.

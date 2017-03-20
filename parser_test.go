@@ -6,15 +6,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNamed(t *testing.T) {
-	p := Named("foobar", Char('a'))
+func TestTag(t *testing.T) {
+	p := Tag("foobar", Char('a'))
 	s := NewStringScanner("abcd")
 
 	r, next := p.Parse(s)
 
 	expected := Result{
-		Runes:      []rune("a"),
-		ParserName: "foobar",
+		Runes: []rune("a"),
+		Tag:   "foobar",
 	}
 
 	assert.True(t, r.Matched())

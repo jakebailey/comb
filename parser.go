@@ -32,11 +32,11 @@ func Reference(p *Parser) Parser {
 	})
 }
 
-// Named sets the ParserName of a parser's result.
-func Named(name string, p Parser) Parser {
+// Tag sets the tag of a parser's result.
+func Tag(tag string, p Parser) Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
 		r, next := p.Parse(s)
-		r.ParserName = name
+		r.Tag = tag
 		return r, next
 	})
 }
