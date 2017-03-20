@@ -38,6 +38,22 @@ func TestIgnore(t *testing.T) {
 	assert.False(t, next.EOF())
 }
 
+func TestReference(t *testing.T) {
+	pr := Char('a')
+	p := Reference(&pr)
+	s := NewStringScanner("a")
+
+	r, next := p.Parse(s)
+
+	expected := Result{
+		Runes: []rune("a"),
+	}
+
+	assert.True(t, r.Matched())
+	assert.Equal(t, expected, r)
+	assert.True(t, next.EOF())
+}
+
 func TestEOF(t *testing.T) {
 	t.Run("EOF", func(t *testing.T) {
 		p := EOF()

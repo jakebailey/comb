@@ -24,6 +24,14 @@ func ParserFunc(fn func(Scanner) (Result, Scanner)) Parser {
 	return parserFunc{fn: fn}
 }
 
+// Reference takes a pointer to a Parser, and only dereferences it
+// when Parse is called.
+func Reference(p *Parser) Parser {
+	return ParserFunc(func(s Scanner) (Result, Scanner) {
+		return (*p).Parse(s)
+	})
+}
+
 // Named sets the ParserName of a parser's result.
 func Named(name string, p Parser) Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
