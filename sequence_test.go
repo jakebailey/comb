@@ -137,3 +137,58 @@ func BenchmarkTextSequence(b *testing.B) {
 		p.Parse(s)
 	}
 }
+
+func TestSurround(t *testing.T) {
+	p := Surround(
+		Char('('),
+		StringToken("foo", "bar", "baz"),
+		Char(')'),
+	)
+
+	t.Run("simple", func(t *testing.T) {
+		s := NewStringScanner("(foo)aaa")
+
+		r, next := p.Parse(s)
+
+		expected := Result{
+			Runes: []rune("foo"),
+		}
+
+		assert.True(t, r.Matched())
+		assert.Equal(t, expected, r)
+		assert.False(t, next.EOF())
+	})
+
+	t.Run("no match", func(t *testing.T) {
+		s := NewStringScanner("(asd)aaa")
+
+		r, _ := p.Parse(s)
+
+		assert.False(t, r.Matched())
+		assert.EqualError(t, r.Err, "unexpected character 'a'")
+	})
+
+	t.Run("nested", func(t *testing.T) {
+		var p Parser
+		p = Or(
+			StringToken("foo", "bar", "baz"),
+			Surround(
+				Char('('),
+				Reference(&p),
+				Char(')'),
+			),
+		)
+
+		s := NewStringScanner("((((baz))))aaa")
+
+		r, next := p.Parse(s)
+
+		expected := Result{
+			Runes: []rune("baz"),
+		}
+
+		assert.True(t, r.Matched())
+		assert.Equal(t, expected, r)
+		assert.False(t, next.EOF())
+	})
+}

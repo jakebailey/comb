@@ -78,3 +78,17 @@ func TextSequence(parsers ...Parser) Parser {
 		}, next
 	})
 }
+
+// Surround surrounds a parser with two parsers, and returns
+// the surrounded value. This is equivalent to Sequence with a combiner
+// which returns the middle result.
+func Surround(left, parser, right Parser) Parser {
+	return Sequence(
+		func(results []Result, begin, end Scanner) Result {
+			return results[1]
+		},
+		left,
+		parser,
+		right,
+	)
+}
