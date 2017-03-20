@@ -82,3 +82,52 @@ func BenchmarkOr(b *testing.B) {
 		p.Parse(s)
 	}
 }
+
+func TestLongestOr(t *testing.T) {
+	p := LongestOr(
+		Char('a'),
+		Char('f'),
+		StringToken("foobar", "fizzbuzz", "hello"),
+		Char('f'),
+	)
+
+	t.Run("match", func(t *testing.T) {
+		s := NewStringScanner("foobarZZZZ")
+
+		r, next := p.Parse(s)
+
+		expected := Result{
+			Runes: []rune("foobar"),
+		}
+
+		assert.True(t, r.Matched())
+		assert.Equal(t, expected, r)
+		assert.False(t, next.EOF())
+	})
+
+	t.Run("no match", func(t *testing.T) {
+		s := NewStringScanner("1234")
+
+		r, _ := p.Parse(s)
+
+		assert.False(t, r.Matched())
+		assert.EqualError(t, r.Err, "no parser matched")
+	})
+}
+
+func BenchmarkLongestOr(b *testing.B) {
+	b.ReportAllocs()
+
+	p := LongestOr(
+		Char('a'),
+		Char('f'),
+		StringToken("foobar", "fizzbuzz", "hello"),
+		Char('f'),
+	)
+	s := NewStringScanner("foobar")
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		p.Parse(s)
+	}
+}
