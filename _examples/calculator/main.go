@@ -22,83 +22,77 @@ var (
 )
 
 func init() {
-	expr = comb.Or(
-		comb.Sequence(
-			func(results []comb.Result, start, end comb.Scanner) comb.Result {
-				acc := results[0].Int64
+	expr = comb.Sequence(
+		func(results []comb.Result, start, end comb.Scanner) comb.Result {
+			acc := results[0].Int64
 
-				l := results[1].Interface.([]comb.Result)
-				for i := 0; i < len(l); i += 2 {
-					op := l[i].Runes[0]
-					v := l[i+1].Int64
+			l := results[1].Interface.([]comb.Result)
+			for i := 0; i < len(l); i += 2 {
+				op := l[i].Runes[0]
+				v := l[i+1].Int64
 
-					switch op {
-					case '+':
-						acc += v
-					case '-':
-						acc -= v
-					}
+				switch op {
+				case '+':
+					acc += v
+				case '-':
+					acc -= v
 				}
+			}
 
-				return comb.Result{
-					Int64: acc,
-				}
-			},
-			comb.Reference(&term),
-			comb.OnePlus(
-				flatten,
-				comb.Sequence(
-					nil,
-					addOp,
-					comb.Reference(&term),
-				),
+			return comb.Result{
+				Int64: acc,
+			}
+		},
+		comb.Reference(&term),
+		comb.Many(
+			flatten,
+			comb.Sequence(
+				nil,
+				addOp,
+				comb.Reference(&term),
 			),
 		),
-		comb.Reference(&term),
 	)
 
-	term = comb.Or(
-		comb.Sequence(
-			func(results []comb.Result, start, end comb.Scanner) comb.Result {
-				acc := results[0].Int64
+	term = comb.Sequence(
+		func(results []comb.Result, start, end comb.Scanner) comb.Result {
+			acc := results[0].Int64
 
-				l := results[1].Interface.([]comb.Result)
-				for i := 0; i < len(l); i += 2 {
-					op := l[i].Runes[0]
-					v := l[i+1].Int64
+			l := results[1].Interface.([]comb.Result)
+			for i := 0; i < len(l); i += 2 {
+				op := l[i].Runes[0]
+				v := l[i+1].Int64
 
-					switch op {
-					case '*':
-						acc *= v
-					case '/':
-						acc /= v
-					}
+				switch op {
+				case '*':
+					acc *= v
+				case '/':
+					acc /= v
 				}
+			}
 
-				return comb.Result{
-					Int64: acc,
-				}
-			},
-			comb.Reference(&factor),
-			comb.OnePlus(
-				flatten,
-				comb.Sequence(
-					nil,
-					mulOp,
-					comb.Reference(&term),
-				),
+			return comb.Result{
+				Int64: acc,
+			}
+		},
+		comb.Reference(&factor),
+		comb.Many(
+			flatten,
+			comb.Sequence(
+				nil,
+				mulOp,
+				comb.Reference(&term),
 			),
 		),
-		comb.Reference(&factor),
 	)
 
 	factor = comb.Or(
+		integer,
 		comb.Surround(
 			lParen,
 			comb.Reference(&expr),
 			rParen,
 		),
-		integer,
 	)
 }
 
