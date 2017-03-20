@@ -146,3 +146,39 @@ func TestNotChar(t *testing.T) {
 		assert.Equal(t, r.Err, io.EOF)
 	})
 }
+
+func TestCharRange(t *testing.T) {
+	p := CharRange('0', '9')
+
+	t.Run("match", func(t *testing.T) {
+		s := NewStringScanner("311")
+
+		r, next := p.Parse(s)
+
+		expected := Result{
+			Runes: []rune("3"),
+		}
+
+		assert.True(t, r.Matched())
+		assert.Equal(t, expected, r)
+		assert.False(t, next.EOF())
+	})
+
+	t.Run("no match", func(t *testing.T) {
+		s := NewStringScanner("abc")
+
+		r, _ := p.Parse(s)
+
+		assert.False(t, r.Matched())
+		assert.EqualError(t, r.Err, "unexpected character 'a'")
+	})
+
+	t.Run("EOF", func(t *testing.T) {
+		s := NewStringScanner("")
+
+		r, _ := p.Parse(s)
+
+		assert.False(t, r.Matched())
+		assert.Equal(t, r.Err, io.EOF)
+	})
+}

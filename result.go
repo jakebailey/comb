@@ -28,7 +28,7 @@ func Failed(err error) Result {
 
 // Failedf returns a failed result in fmt.Errorf form.
 // fmt.Errorf will not be called until the error is read to prevent
-// unneccesary computation. This is important, as failed results
+// unnecessary computation. This is important, as failed results
 // can be checked without ever generating an error.
 func Failedf(format string, a ...interface{}) Result {
 	return Result{
