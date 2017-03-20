@@ -1,8 +1,9 @@
 package comb
 
 // Sequence runs multiple parsers in a sequence, combining results
-// with a combiner function. If combiner is nil, then SliceCombiner is used.
-// Sequence must allocate a slice of results the same length as the number of parsers required.
+// with a combiner function. If combiner is nil, then SliceCombiner
+// is used. Sequence must allocate a slice of results the same length
+// as the number of parsers required.
 //
 // If you only need the runes captured by Sequence, use TextSequence instead.
 func Sequence(combiner ResultCombiner, parsers ...Parser) Parser {
