@@ -6,14 +6,14 @@ import (
 	"github.com/jakebailey/comb"
 )
 
-var integerParser = comb.TextSequence(
+var integerParser = comb.SequenceRunes(
 	comb.Maybe(
 		comb.Char('-'),
 	),
 	comb.Or(
-		comb.TextSequence(
+		comb.SequenceRunes(
 			comb.Token("0x", "0X"),
-			comb.TextOnePlus(
+			comb.OnePlusRunes(
 				comb.Or(
 					comb.CharRange('a', 'z'),
 					comb.CharRange('a', 'z'),
