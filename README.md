@@ -21,11 +21,11 @@ var integerParser = comb.SequenceRunes(
                 comb.Or(
                     comb.CharRange('a', 'z'),
                     comb.CharRange('a', 'z'),
-                    Digit(),
+                    combext.Digit(),
                 ),
             ),
         ),
-        Digits(),
+        combext.Digits(),
     ),
 )
 ```
