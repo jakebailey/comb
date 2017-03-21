@@ -9,24 +9,24 @@ For example, here is a parser that recognizes the decimal, octal,
 and hex integers accepted in Go.
 
 
-	var integerParser = comb.SequenceRunes(
-		comb.Maybe(
-			comb.Char('-'),
-		),
-		comb.Or(
-			comb.SequenceRunes(
-				comb.Token("0x", "0X"),
-				comb.OnePlusRunes(
-					comb.Or(
-						comb.CharRange('a', 'z'),
-						comb.CharRange('a', 'z'),
-						Digit(),
-					),
-				),
-			),
-			Digits(),
-		),
-	)
+    var integerParser = comb.SequenceRunes(
+        comb.Maybe(
+            comb.Char('-'),
+        ),
+        comb.Or(
+            comb.SequenceRunes(
+                comb.Token("0x", "0X"),
+                comb.OnePlusRunes(
+                    comb.Or(
+                        comb.CharRange('a', 'z'),
+                        comb.CharRange('a', 'z'),
+                        Digit(),
+                    ),
+                ),
+            ),
+            Digits(),
+        ),
+    )
 
 (Though, this is more succinctly expressed with a regular expression, giving a
 moderate performance gain.)
