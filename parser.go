@@ -41,7 +41,7 @@ func Tag(tag string, parser Parser) Parser {
 	})
 }
 
-// Ignore sets the result of a Parser to be Ignored
+// Ignore sets the result of a Parser to be Ignored.
 func Ignore(parser Parser) Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
 		r, next := parser.Parse(s)
