@@ -33,18 +33,18 @@ func Reference(p *Parser) Parser {
 }
 
 // Tag sets the tag of a parser's result.
-func Tag(tag string, p Parser) Parser {
+func Tag(tag string, parser Parser) Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
-		r, next := p.Parse(s)
+		r, next := parser.Parse(s)
 		r.Tag = tag
 		return r, next
 	})
 }
 
 // Ignore sets the result of a Parser to be Ignored
-func Ignore(p Parser) Parser {
+func Ignore(parser Parser) Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
-		r, next := p.Parse(s)
+		r, next := parser.Parse(s)
 		r.Ignore = true
 		return r, next
 	})
@@ -64,9 +64,9 @@ func EOF() Parser {
 
 // Maybe tries a parser and returns its result if it matches,
 // otherwise, it returns an empty result and the original scanner.
-func Maybe(p Parser) Parser {
+func Maybe(parser Parser) Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
-		r, next := p.Parse(s)
+		r, next := parser.Parse(s)
 		if r.Matched() {
 			return r, next
 		}
