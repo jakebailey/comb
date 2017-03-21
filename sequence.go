@@ -5,7 +5,7 @@ package comb
 // is used. Sequence must allocate a slice of results the same length
 // as the number of parsers required.
 //
-// If you only need the runes captured by Sequence, use TextSequence instead.
+// If you only need the runes captured by Sequence, use SequenceRunes instead.
 func Sequence(combiner ResultCombiner, parsers ...Parser) Parser {
 	if combiner == nil {
 		combiner = SliceCombiner
@@ -56,12 +56,12 @@ func SliceCombiner(results []Result, begin, end Scanner) Result {
 	}
 }
 
-// TextSequence is like Sequence, but does not capture all results,
+// SequenceRunes is like Sequence, but does not capture all results,
 // instead returning the runes between the start and end of the matching
 // region. Unlike Sequence, this does not allocate anything.
-// TextSequence does not read any results, just the returned scanners,
+// SequenceRunes does not read any results, just the returned scanners,
 // so cannot respect the Ignored option.
-func TextSequence(parsers ...Parser) Parser {
+func SequenceRunes(parsers ...Parser) Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
 		var r Result
 		next := s

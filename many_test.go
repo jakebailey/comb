@@ -46,8 +46,8 @@ func TestMany(t *testing.T) {
 	})
 }
 
-func TestTextMany(t *testing.T) {
-	p := TextMany(
+func TestManyRunes(t *testing.T) {
+	p := ManyRunes(
 		Char('a'),
 	)
 
@@ -116,8 +116,8 @@ func TestOnePlus(t *testing.T) {
 	})
 }
 
-func TestTextOnePlus(t *testing.T) {
-	p := TextOnePlus(
+func TestOnePlusRunes(t *testing.T) {
+	p := OnePlusRunes(
 		Char('a'),
 	)
 

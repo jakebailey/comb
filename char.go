@@ -111,7 +111,7 @@ func Digit() Parser {
 
 // Digits accepts 1+ digits.
 func Digits() Parser {
-	return TextOnePlus(Digit())
+	return OnePlusRunes(Digit())
 }
 
 // AlphaLower accepts characters from a to z.
@@ -147,10 +147,10 @@ func Whitespace() Parser {
 
 // ManyWhitespace accepts 0+ instances of whitespace.
 func ManyWhitespace() Parser {
-	return TextMany(Whitespace())
+	return ManyRunes(Whitespace())
 }
 
 // OnePlusWhitespace accepts 1+ instances of whitespace.
 func OnePlusWhitespace() Parser {
-	return TextOnePlus(Whitespace())
+	return ManyRunes(Whitespace())
 }

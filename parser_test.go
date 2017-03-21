@@ -81,7 +81,7 @@ func TestEOF(t *testing.T) {
 }
 
 func TestMaybe(t *testing.T) {
-	p := TextSequence(
+	p := SequenceRunes(
 		Maybe(Char('a')),
 		Char('b'),
 	)

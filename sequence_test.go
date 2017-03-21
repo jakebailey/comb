@@ -87,9 +87,9 @@ func BenchmarkSequence(b *testing.B) {
 	}
 }
 
-func TestTextSequence(t *testing.T) {
+func TestSequenceRunes(t *testing.T) {
 	t.Run("match", func(t *testing.T) {
-		p := TextSequence(
+		p := SequenceRunes(
 			Char('a'),
 			Char('b'),
 			Char('c'),
@@ -108,7 +108,7 @@ func TestTextSequence(t *testing.T) {
 	})
 
 	t.Run("no match", func(t *testing.T) {
-		p := TextSequence(
+		p := SequenceRunes(
 			Char('a'),
 			Char('b'),
 			Char('c'),
@@ -122,10 +122,10 @@ func TestTextSequence(t *testing.T) {
 	})
 }
 
-func BenchmarkTextSequence(b *testing.B) {
+func BenchmarkSequenceRunes(b *testing.B) {
 	b.ReportAllocs()
 
-	p := TextSequence(
+	p := SequenceRunes(
 		Char('a'),
 		Char('b'),
 		Char('c'),

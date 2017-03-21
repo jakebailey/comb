@@ -28,9 +28,9 @@ func Many(combiner ResultCombiner, parser Parser) Parser {
 	})
 }
 
-// TextMany looks for a series of 0+ matches of a parser,
+// ManyRunes looks for a series of 0+ matches of a parser,
 // then returns the runes captured.
-func TextMany(parser Parser) Parser {
+func ManyRunes(parser Parser) Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
 		next := s
 
@@ -78,9 +78,9 @@ func OnePlus(combiner ResultCombiner, parser Parser) Parser {
 	})
 }
 
-// TextOnePlus looks for a series of 1+ matches of a parser,
+// OnePlusRunes looks for a series of 1+ matches of a parser,
 // then returns the runes captured.
-func TextOnePlus(parser Parser) Parser {
+func OnePlusRunes(parser Parser) Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
 		r, next := parser.Parse(s)
 		if !r.Matched() {
