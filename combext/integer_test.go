@@ -1,4 +1,4 @@
-package helpers
+package combext
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 
 func intShouldMatch(t *testing.T, i int64, str string) {
 	s := comb.NewStringScanner(str)
-	r, _ := IntegerParser().Parse(s)
+	r, _ := Integer().Parse(s)
 
 	assert.Nil(t, r.Err)
 	assert.Equal(t, i, r.Int64)
@@ -33,7 +33,7 @@ func intCheck(t *testing.T, i int64) {
 	}
 }
 
-func TestIntegerParser(t *testing.T) {
+func TestInteger(t *testing.T) {
 	for _, v := range []int64{
 		0, 1234, 0xDEADBEEF, -1,
 	} {
@@ -41,14 +41,14 @@ func TestIntegerParser(t *testing.T) {
 	}
 }
 
-func BenchmarkIntegerParser(b *testing.B) {
+func BenchmarkInteger(b *testing.B) {
 	b.ReportAllocs()
-	p := IntegerParser()
+	p := Integer()
 
 	tests := []string{
 		"0x1234123412341234",
-		"0xDEADBEEF",
 		"-0xFFFF0000",
+		"0xDEADBEEF",
 		"0Xaaaa",
 		"-12345",
 		"0777",

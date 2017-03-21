@@ -4,11 +4,11 @@ import (
 	"fmt"
 
 	"github.com/jakebailey/comb"
-	"github.com/jakebailey/comb/helpers"
+	"github.com/jakebailey/comb/combext"
 )
 
 var (
-	integer = whitespaceAround(helpers.IntegerParser())
+	integer = whitespaceAround(combext.Integer())
 	addOp   = whitespaceAround(comb.Char('+', '-'))
 	mulOp   = whitespaceAround(comb.Char('*', '/'))
 	lParen  = whitespaceAround(comb.Char('('))
@@ -98,9 +98,9 @@ func init() {
 
 func whitespaceAround(p comb.Parser) comb.Parser {
 	return comb.Surround(
-		comb.ManyWhitespace(),
+		combext.ManyWhitespace(),
 		p,
-		comb.ManyWhitespace(),
+		combext.ManyWhitespace(),
 	)
 }
 

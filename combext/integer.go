@@ -1,4 +1,4 @@
-package helpers
+package combext
 
 import (
 	"strconv"
@@ -17,21 +17,21 @@ import (
 // 				comb.Or(
 // 					comb.CharRange('a', 'z'),
 // 					comb.CharRange('a', 'z'),
-// 					comb.Digit(),
+// 					Digit(),
 // 				),
 // 			),
 // 		),
-// 		comb.Digits(),
+// 		Digits(),
 // 	),
 // )
 
 var integerParser = comb.Regexp(`-?0[xX][\da-fA-F]+|\d+`)
 
-// IntegerParser parses an integer in base 8, 10, or 16 using strconv.
+// Integer parses an integer in base 8, 10, or 16 using strconv.
 // It first applies ParseUint, then ParseInt, taking the first non-failing
 // parsed int64. As an optimization, the string "0" will be immediately
 // converted without any strconv calls.
-func IntegerParser() comb.Parser {
+func Integer() comb.Parser {
 	return comb.ParserFunc(func(s comb.Scanner) (comb.Result, comb.Scanner) {
 		r, next := integerParser.Parse(s)
 		if !r.Matched() {
