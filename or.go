@@ -15,11 +15,11 @@ func Or(parsers ...Parser) Parser {
 	})
 }
 
-// LongestOr is like Or, but returns the result of the parser
+// OrLongest is like Or, but returns the result of the parser
 // that captures the most text. Ties are broken by taking the
 // first result. In order to do this, *every* parser will be run,
 // so keep that in mind.
-func LongestOr(parsers ...Parser) Parser {
+func OrLongest(parsers ...Parser) Parser {
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
 		matched := false
 		var maxResult Result

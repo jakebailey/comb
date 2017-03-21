@@ -83,8 +83,8 @@ func BenchmarkOr(b *testing.B) {
 	}
 }
 
-func TestLongestOr(t *testing.T) {
-	p := LongestOr(
+func TestOrLongest(t *testing.T) {
+	p := OrLongest(
 		Char('a'),
 		Char('f'),
 		Token("foobar", "fizzbuzz", "hello"),
@@ -115,10 +115,10 @@ func TestLongestOr(t *testing.T) {
 	})
 }
 
-func BenchmarkLongestOr(b *testing.B) {
+func BenchmarkOrLongest(b *testing.B) {
 	b.ReportAllocs()
 
-	p := LongestOr(
+	p := OrLongest(
 		Char('a'),
 		Char('f'),
 		Token("foobar", "fizzbuzz", "hello"),
