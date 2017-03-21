@@ -46,13 +46,13 @@ func BenchmarkIntegerParser(b *testing.B) {
 	p := IntegerParser()
 
 	tests := []string{
-		"0",
-		"-12345",
-		"0xDEADBEEF",
-		"0777",
 		"0x1234123412341234",
+		"0xDEADBEEF",
 		"-0xFFFF0000",
 		"0Xaaaa",
+		"-12345",
+		"0777",
+		"0",
 	}
 
 	for _, str := range tests {

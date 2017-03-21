@@ -6,24 +6,26 @@ import (
 	"github.com/jakebailey/comb"
 )
 
-var integerParser = comb.SequenceRunes(
-	comb.Maybe(
-		comb.Char('-'),
-	),
-	comb.Or(
-		comb.SequenceRunes(
-			comb.Token("0x", "0X"),
-			comb.OnePlusRunes(
-				comb.Or(
-					comb.CharRange('a', 'z'),
-					comb.CharRange('a', 'z'),
-					comb.Digit(),
-				),
-			),
-		),
-		comb.Digits(),
-	),
-)
+// var integerParser = comb.SequenceRunes(
+// 	comb.Maybe(
+// 		comb.Char('-'),
+// 	),
+// 	comb.Or(
+// 		comb.SequenceRunes(
+// 			comb.Token("0x", "0X"),
+// 			comb.OnePlusRunes(
+// 				comb.Or(
+// 					comb.CharRange('a', 'z'),
+// 					comb.CharRange('a', 'z'),
+// 					comb.Digit(),
+// 				),
+// 			),
+// 		),
+// 		comb.Digits(),
+// 	),
+// )
+
+var integerParser = comb.Regexp(`-?0[xX][\da-fA-F]+|\d+`)
 
 // IntegerParser parses an integer in base 8, 10, or 16 using strconv.
 // It first applies ParseUint, then ParseInt, taking the first non-failing
