@@ -10,7 +10,7 @@ func TestOr(t *testing.T) {
 	p := Or(
 		Char('a'),
 		Char('b'),
-		StringToken("foobar", "fizzbuzz", "hello"),
+		Token("foobar", "fizzbuzz", "hello"),
 		Char('f'),
 	)
 
@@ -72,7 +72,7 @@ func BenchmarkOr(b *testing.B) {
 	p := Or(
 		Char('a'),
 		Char('b'),
-		StringToken("foobar", "fizzbuzz", "hello"),
+		Token("foobar", "fizzbuzz", "hello"),
 		Char('f'),
 	)
 	s := NewStringScanner("foobar")
@@ -87,7 +87,7 @@ func TestLongestOr(t *testing.T) {
 	p := LongestOr(
 		Char('a'),
 		Char('f'),
-		StringToken("foobar", "fizzbuzz", "hello"),
+		Token("foobar", "fizzbuzz", "hello"),
 		Char('f'),
 	)
 
@@ -121,7 +121,7 @@ func BenchmarkLongestOr(b *testing.B) {
 	p := LongestOr(
 		Char('a'),
 		Char('f'),
-		StringToken("foobar", "fizzbuzz", "hello"),
+		Token("foobar", "fizzbuzz", "hello"),
 		Char('f'),
 	)
 	s := NewStringScanner("foobar")

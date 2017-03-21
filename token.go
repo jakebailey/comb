@@ -5,7 +5,17 @@ import "fmt"
 // Token accepts the shortest given token. At least one token must
 // be provided. If more than one token is given, then a trie is used
 // to check for membership.
-func Token(tokens ...[]rune) Parser {
+func Token(tokens ...string) Parser {
+	rTokens := make([][]rune, len(tokens))
+	for i, s := range tokens {
+		rTokens[i] = []rune(s)
+	}
+
+	return TokenRunes(rTokens...)
+}
+
+// TokenRunes is like Token, but takes multiple rune slices.
+func TokenRunes(tokens ...[]rune) Parser {
 	if len(tokens) == 0 {
 		panic("at least one token must be specified")
 	}
@@ -21,16 +31,6 @@ func Token(tokens ...[]rune) Parser {
 	}
 
 	return manyTokens(tokens)
-}
-
-// StringToken is like Token, but takes multiple strings.
-func StringToken(tokens ...string) Parser {
-	rTokens := make([][]rune, len(tokens))
-	for i, s := range tokens {
-		rTokens[i] = []rune(s)
-	}
-
-	return Token(rTokens...)
 }
 
 func singleToken(runes []rune) Parser {

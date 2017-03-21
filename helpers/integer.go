@@ -12,7 +12,7 @@ var integerParser = comb.TextSequence(
 	),
 	comb.Or(
 		comb.TextSequence(
-			comb.StringToken("0x", "0X"),
+			comb.Token("0x", "0X"),
 			comb.TextOnePlus(
 				comb.Or(
 					comb.CharRange('a', 'z'),

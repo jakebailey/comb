@@ -41,25 +41,25 @@ func TestBadToken(t *testing.T) {
 		Token()
 	})
 	assert.Panics(t, func() {
-		StringToken()
+		Token()
 	})
 	assert.Panics(t, func() {
-		Token([]rune(""))
+		TokenRunes([]rune(""))
 	})
 	assert.Panics(t, func() {
-		StringToken("")
+		Token("")
 	})
 
 	assert.Panics(t, func() {
-		Token([]rune("foobar"), []rune(""), []rune("asdf"))
+		TokenRunes([]rune("foobar"), []rune(""), []rune("asdf"))
 	})
 	assert.Panics(t, func() {
-		StringToken("foobar", "", "asdf")
+		Token("foobar", "", "asdf")
 	})
 }
 
 func TestSingleToken(t *testing.T) {
-	p := StringToken("foobar")
+	p := Token("foobar")
 
 	t.Run("easy", func(t *testing.T) {
 		tests := map[string]string{
@@ -95,7 +95,7 @@ func TestSingleToken(t *testing.T) {
 func BenchmarkSingleToken(b *testing.B) {
 	b.ReportAllocs()
 
-	p := StringToken("foobar")
+	p := Token("foobar")
 	s := NewStringScanner("foobarbaz")
 
 	b.ResetTimer()
@@ -105,7 +105,7 @@ func BenchmarkSingleToken(b *testing.B) {
 }
 
 func TestManyTokens(t *testing.T) {
-	p := StringToken("foobar", "foolol", "hello")
+	p := Token("foobar", "foolol", "hello")
 
 	t.Run("easy", func(t *testing.T) {
 		tests := map[string]string{
@@ -143,7 +143,7 @@ func TestManyTokens(t *testing.T) {
 func BenchmarkManyTokens(b *testing.B) {
 	b.ReportAllocs()
 
-	p := StringToken("foobar", "foolol", "hello")
+	p := Token("foobar", "foolol", "hello")
 	s := NewStringScanner("foobarbaz")
 
 	b.ResetTimer()

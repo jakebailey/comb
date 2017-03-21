@@ -141,7 +141,7 @@ func BenchmarkTextSequence(b *testing.B) {
 func TestSurround(t *testing.T) {
 	p := Surround(
 		Char('('),
-		StringToken("foo", "bar", "baz"),
+		Token("foo", "bar", "baz"),
 		Char(')'),
 	)
 
@@ -171,7 +171,7 @@ func TestSurround(t *testing.T) {
 	t.Run("nested", func(t *testing.T) {
 		var p Parser
 		p = Or(
-			StringToken("foo", "bar", "baz"),
+			Token("foo", "bar", "baz"),
 			Surround(
 				Char('('),
 				Reference(&p),
