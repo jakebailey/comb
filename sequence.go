@@ -12,7 +12,7 @@ func Sequence(combiner ResultCombiner, parsers ...Parser) Parser {
 	}
 
 	return ParserFunc(func(s Scanner) (Result, Scanner) {
-		results := make([]Result, len(parsers))
+		var results []Result
 
 		var r Result
 		next := s
@@ -22,6 +22,10 @@ func Sequence(combiner ResultCombiner, parsers ...Parser) Parser {
 
 			if !r.Matched() {
 				return r, next
+			}
+
+			if results == nil {
+				results = make([]Result, len(parsers))
 			}
 
 			results[i] = r
